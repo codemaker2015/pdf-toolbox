@@ -2,6 +2,7 @@ import os
 import tempfile
 import zipfile
 import io
+import shutil
 import streamlit as st
 from utils.pdf_processing import (
     split_pdf_pages, merge_pdfs, extract_page_range, remove_first_last_pages,
@@ -148,13 +149,15 @@ else:
 
             if os.path.isdir(folder) and len(os.listdir(folder)) > 0:
                 zbytes = zip_folder_to_bytes(folder)
-                download_bytes("📥 Download Images (ZIP)", zbytes, "images.zip", "application/zip")
-                image_files = [os.path.join(folder, f) for f in sorted(os.listdir(folder))]
-                # st.write("### Extracted Images Preview")
-                cols = st.columns(3)  # grid with 3 columns
-                for i, img in enumerate(image_files):
-                    with cols[i % 3]:
-                        st.image(img, caption=os.path.basename(img), use_container_width=True)
+                if st.download_button("📥 Download Images (ZIP)", zbytes, "images.zip", "application/zip"):
+                    shutil.rmtree(folder)
+                if os.path.isdir(folder):
+                    image_files = [os.path.join(folder, f) for f in sorted(os.listdir(folder))]
+                    # st.write("### Extracted Images Preview")
+                    cols = st.columns(3)  # grid with 3 columns
+                    for i, img in enumerate(image_files):
+                        with cols[i % 3]:
+                            st.image(img, caption=os.path.basename(img), use_container_width=True)
 
         elif tool == "Extract Tables":
             tables = extract_tables(pdf_path)
