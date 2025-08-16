@@ -102,19 +102,24 @@ def keyword_highlight_pdf(pdf_path: str, keyword: str, output_path: str = "highl
 def extract_images(pdf_path: str, output_folder: str = "extracted_images") -> list[str]:
     """Extract embedded images to a folder; returns list of saved image paths."""
     os.makedirs(output_folder, exist_ok=True)
-    saved = []
-    with fitz.open(pdf_path) as doc:
-        for i, page in enumerate(doc):
-            for idx, img in enumerate(page.get_images(full=True)):
-                xref = img[0]
-                base = doc.extract_image(xref)
-                img_bytes = base["image"]
-                ext = base.get("ext", "png")
-                out_path = os.path.join(output_folder, f"page_{i+1}_img_{idx+1}.{ext}")
-                with open(out_path, "wb") as f:
-                    f.write(img_bytes)
-                saved.append(out_path)
-    return saved
+    doc = fitz.open(pdf_path)
+
+    for page_num in range(len(doc)):
+        page = doc[page_num]
+        images = page.get_images(full=True)
+        for img_index, img in enumerate(images):
+            xref = img[0]
+            base_image = doc.extract_image(xref)
+            image_bytes = base_image["image"]
+            image_ext = base_image["ext"]
+            image_filename = os.path.join(
+                output_folder,
+                f"page_{page_num+1}_img_{img_index+1}.{image_ext}"
+            )
+            with open(image_filename, "wb") as f:
+                f.write(image_bytes)
+
+    return output_folder
 
 
 def extract_tables(pdf_path: str):

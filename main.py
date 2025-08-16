@@ -142,16 +142,19 @@ else:
 
         elif tool == "Extract Images":
             folder = extract_images(pdf_path, output_folder="images_out")
-            st.success(f"Extracted images → {folder}")
+            # st.success(f"Extracted images → {folder}")
             if isinstance(folder, list):
                 folder = folder[0]
 
             if os.path.isdir(folder) and len(os.listdir(folder)) > 0:
                 zbytes = zip_folder_to_bytes(folder)
                 download_bytes("📥 Download Images (ZIP)", zbytes, "images.zip", "application/zip")
-                # Show a few previews
-                previews = [os.path.join(folder, f) for f in sorted(os.listdir(folder))[:6]]
-                st.image(previews, caption=[os.path.basename(p) for p in previews])
+                image_files = [os.path.join(folder, f) for f in sorted(os.listdir(folder))]
+                # st.write("### Extracted Images Preview")
+                cols = st.columns(3)  # grid with 3 columns
+                for i, img in enumerate(image_files):
+                    with cols[i % 3]:
+                        st.image(img, caption=os.path.basename(img), use_container_width=True)
 
         elif tool == "Extract Tables":
             tables = extract_tables(pdf_path)

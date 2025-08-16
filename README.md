@@ -14,25 +14,37 @@ A versatile PDF processing tool built with Python. This toolbox provides functio
 
 ---
 
+## Demos
+
+### PDF Processing
+![pdf processing](demos/pdf_processing_demo.gif)
+
+### Advanced Processing
+![advanced processing](demos/advanced_processing.gif)
+
+### Analysis
+![analysis](demos/analysis.gif)
+
+### Export
+![export](demos/export.gif)
+
+---
+
 ## 🛠️ Installation  
 
 Clone the repository and set up the environment:  
 
 ```bash
-git clone https://github.com/your-username/pdf-toolbox.git
+git clone https://github.com/codemaker2015/pdf-toolbox.git
 cd pdf-toolbox
 ```
 
 Install dependencies (using [uv](https://github.com/astral-sh/uv) or pip):  
 
 ```bash
+uv venv
+.venv\Scripts\activate
 uv sync
-```
-
-Or with pip:  
-
-```bash
-pip install -r requirements.txt
 ```
 
 ---
@@ -42,7 +54,7 @@ pip install -r requirements.txt
 Run the main script:  
 
 ```bash
-python main.py
+streamlit run main.py
 ```
 
 ---
