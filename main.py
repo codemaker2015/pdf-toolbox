@@ -13,8 +13,8 @@ from utils.pdf_analysis import rag_qa, summarize_text
 from utils.pdf_export import export_to_word, export_to_text, export_text_to_markdown
 
 
-st.set_page_config(page_title="PDF Toolkit", layout="wide")
-st.title("🛠 PDF Toolkit")
+st.set_page_config(page_title="PDF Toolbox", layout="wide")
+st.title("🛠 PDF Toolbox")
 
 with st.sidebar:
     st.header("Tools")
